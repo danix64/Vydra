@@ -1,0 +1,10 @@
+bin/ 
+obj/ 
+.vs/ 
+publish/ 
+*.user 
+Tools/*.exe 
+Tools/*.zip 
+Tools/*.bak 
+Tools/*.123 
+logs/ 

@@ -1,0 +1,142 @@
+﻿<Window x:Class="Vydra.Dialogs.MessageDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Vydra"
+        SizeToContent="Height"
+        Width="460"
+        MinWidth="380" MaxWidth="600"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="#1B2838"
+        Icon="pack://application:,,,/vydra.ico"
+        FontFamily="Segoe UI"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Opacity="0">
+
+    <Window.Resources>
+        <Style x:Key="SteamButton" TargetType="Button">
+            <Setter Property="Background" Value="#2A475E"/>
+            <Setter Property="Foreground" Value="#C7D5E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="MinWidth" Value="90"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3D6A8F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource SteamButton}">
+            <Setter Property="Background" Value="#3D6A8F"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#1B2838"
+            BorderBrush="#2A475E"
+            BorderThickness="1"
+            CornerRadius="6">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border x:Name="AccentBar" Grid.Column="0"
+                    Background="#66C0F4"
+                    CornerRadius="6,0,0,6"/>
+
+            <Grid Grid.Column="1" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Заголовок (кликабельный для перетаскивания) -->
+                <Grid x:Name="TitleBar" Grid.Row="0"
+                      Background="Transparent"
+                      MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Иконка Vydra -->
+                    <Image x:Name="IconImage"
+                           Grid.Column="0"
+                           Width="24" Height="24"
+                           Margin="16,14,10,0"
+                           VerticalAlignment="Top"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                    <!-- Заголовок -->
+                    <TextBlock x:Name="TitleText" Grid.Column="1"
+                               Text="Заголовок"
+                               Foreground="#C7D5E0"
+                               FontSize="14" FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Margin="0,16,0,0"
+                               TextWrapping="Wrap"/>
+
+                    <!-- Кнопка закрытия -->
+                    <Button x:Name="CloseXBtn" Grid.Column="2"
+                            Content="✕"
+                            Width="36" Height="32"
+                            Margin="8,8,8,0"
+                            Background="Transparent"
+                            Foreground="#8F98A0"
+                            BorderThickness="0"
+                            FontSize="14"
+                            Cursor="Hand"
+                            Click="CloseXBtn_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#C0392B"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+
+                <!-- Текст сообщения -->
+                <TextBlock x:Name="MessageText" Grid.Row="1"
+                           Text="Текст сообщения"
+                           Foreground="#C7D5E0"
+                           FontSize="13"
+                           TextWrapping="Wrap"
+                           Margin="50,10,24,20"/>
+
+                <!-- Кнопки -->
+                <StackPanel x:Name="ButtonsPanel" Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="24,0,24,20"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

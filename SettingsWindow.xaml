@@ -1,0 +1,284 @@
+﻿<Window x:Class="Vydra.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="Настройки — Vydra" Height="740" Width="580"
+        Background="#1B2838"
+        Icon="pack://application:,,,/vydra.ico"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        FontFamily="Segoe UI"
+        WindowStyle="None">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="36"
+                            ResizeBorderThickness="0"
+                            GlassFrameThickness="0"
+                            CornerRadius="0"
+                            UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="SteamButton" TargetType="Button">
+            <Setter Property="Background" Value="#2A475E"/>
+            <Setter Property="Foreground" Value="#C7D5E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3D6A8F"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#22303F"/>
+                                <Setter Property="Foreground" Value="#5A6B7A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SteamTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#16202D"/>
+            <Setter Property="Foreground" Value="#C7D5E0"/>
+            <Setter Property="BorderBrush" Value="#2A475E"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="CaretBrush" Value="#C7D5E0"/>
+        </Style>
+
+        <Style x:Key="SteamLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#C7D5E0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#66C0F4"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="CaptionButton" TargetType="Button">
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C7D5E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2A475E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseCaptionButton" TargetType="Button" BasedOn="{StaticResource CaptionButton}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C0392B"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#1B2838"
+            BorderBrush="#2A475E"
+            BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- TITLE BAR -->
+            <Grid Grid.Row="0" Background="#16202D"
+                  MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0"
+                       Source="pack://application:,,,/vydra.ico"
+                       Width="18" Height="18"
+                       Margin="12,0,8,0"
+                       VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="Настройки — Vydra"
+                           Foreground="#66C0F4"
+                           FontSize="13" FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <Button Grid.Column="2"
+                        Content="─"
+                        Style="{StaticResource CaptionButton}"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                        Click="MinimizeBtn_Click"/>
+
+                <Button Grid.Column="3"
+                        Content="✕"
+                        Style="{StaticResource CloseCaptionButton}"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                        Click="CloseBtn_Click"/>
+            </Grid>
+
+            <!-- КОНТЕНТ -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- 0: Утилиты -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 1: Прокси -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 2: AV1 -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 3: Разделитель -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 4: LAV Filters -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 5: Логи -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 6: Обновление Vydra -->
+                        <RowDefinition Height="*"/>
+                        <!-- 7: Пусто -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 8: Кнопки -->
+                    </Grid.RowDefinitions>
+
+                    <!-- 0. Утилиты -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                        <TextBlock Text="Утилиты" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock Text="yt-dlp, ffmpeg, deno — для скачивания и склейки видео"
+                                   Style="{StaticResource SteamLabel}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <CheckBox x:Name="ToolsCheck" Foreground="#C7D5E0" FontSize="12"
+                                      VerticalAlignment="Center" IsEnabled="False"
+                                      Content="Утилиты: проверка..."/>
+                            <Button x:Name="DownloadToolsBtn" Content="Скачать утилиты"
+                                    Style="{StaticResource SteamButton}"
+                                    Margin="16,0,0,0" Visibility="Collapsed"
+                                    Click="DownloadToolsBtn_Click"/>
+                            <Button x:Name="UpdateYtDlpBtn" Content="Проверить обновление"
+                                    Style="{StaticResource SteamButton}"
+                                    Margin="8,0,0,0"
+                                    Click="UpdateYtDlpBtn_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- 1. Прокси -->
+                    <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                        <TextBlock Text="Прокси" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock Text="Необязательно. Формат: socks5://host:port или http://host:port"
+                                   Style="{StaticResource SteamLabel}"/>
+                        <TextBox x:Name="ProxyBox" Style="{StaticResource SteamTextBox}"
+                                 ToolTip="Оставьте пустым, если прокси не нужен"/>
+                    </StackPanel>
+
+                    <!-- 2. AV1 -->
+                    <StackPanel Grid.Row="2" Margin="0,0,0,20">
+                        <TextBlock Text="AV1 Video Extension" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock Text="Для воспроизведения 2K/4K/8K в Windows Media Player"
+                                   Style="{StaticResource SteamLabel}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <CheckBox x:Name="Av1Check" Foreground="#C7D5E0" FontSize="12"
+                                      VerticalAlignment="Center" IsEnabled="False"
+                                      Content="AV1: проверка..."/>
+                            <Button x:Name="InstallAv1Btn" Content="Открыть Microsoft Store"
+                                    Style="{StaticResource SteamButton}"
+                                    Margin="16,0,0,0" Visibility="Collapsed"
+                                    Click="InstallAv1Btn_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- 3. Разделитель -->
+                    <Border Grid.Row="3" Height="1" Background="#2A475E" Margin="0,0,0,20"/>
+
+                    <!-- 4. LAV Filters -->
+                    <StackPanel Grid.Row="4" Margin="0,0,0,20">
+                        <TextBlock Text="Кодеки LAV Filters" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock Text="Для корректного воспроизведения 4K/HEVC в плеерах"
+                                   Style="{StaticResource SteamLabel}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <CheckBox x:Name="LavCheck" Foreground="#C7D5E0" FontSize="12"
+                                      VerticalAlignment="Center" IsEnabled="False"
+                                      Content="LAV Filters: проверка..."/>
+                            <Button x:Name="InstallLavBtn" Content="Скачать и установить"
+                                    Style="{StaticResource SteamButton}"
+                                    Margin="16,0,0,0" Visibility="Collapsed"
+                                    Click="InstallLavBtn_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- 5. Логи -->
+                    <StackPanel Grid.Row="5" Margin="0,0,0,20">
+                        <TextBlock Text="Логи" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock Text="История работы программы — по дням"
+                                   Style="{StaticResource SteamLabel}"/>
+                        <Button x:Name="OpenLogsBtn" Content="Открыть папку с логами"
+                                Style="{StaticResource SteamButton}"
+                                HorizontalAlignment="Left"
+                                Margin="0,4,0,0"
+                                Click="OpenLogsBtn_Click"/>
+                    </StackPanel>
+
+                    <!-- 6. Обновление Vydra -->
+                    <StackPanel Grid.Row="6" Margin="0,0,0,20">
+                        <TextBlock Text="Обновление Vydra" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock x:Name="AppVersionText"
+                                   Text="Vydra 0.1.0"
+                                   Style="{StaticResource SteamLabel}"/>
+                        <Button x:Name="CheckUpdateBtn" Content="Проверить обновления"
+                                Style="{StaticResource SteamButton}"
+                                HorizontalAlignment="Left"
+                                Margin="0,4,0,0"
+                                Click="CheckUpdateBtn_Click"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="7"/>
+
+                    <!-- 8. Кнопки -->
+                    <StackPanel Grid.Row="8" Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button x:Name="SaveBtn" Content="Сохранить"
+                                Style="{StaticResource SteamButton}"
+                                Width="120" Click="SaveBtn_Click"/>
+                        <Button x:Name="CancelBtn" Content="Отмена"
+                                Style="{StaticResource SteamButton}"
+                                Width="120" Margin="10,0,0,0" Click="CancelBtn_Click"/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>
