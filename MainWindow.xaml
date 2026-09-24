@@ -212,78 +212,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!-- Локальный стиль ScrollBar — для надёжности -->
-        <Style TargetType="ScrollBar">
-            <Setter Property="Background" Value="#0E1621"/>
-            <Setter Property="Width" Value="10"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollBar">
-                        <Grid Background="#0E1621">
-                            <Track x:Name="PART_Track" IsDirectionReversed="True">
-                                <Track.Thumb>
-                                    <Thumb>
-                                        <Thumb.Template>
-                                            <ControlTemplate TargetType="Thumb">
-                                                <Border Background="#2A475E" CornerRadius="5" Margin="2,0"/>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#3D6A8F"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Thumb.Template>
-                                    </Thumb>
-                                </Track.Thumb>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
-                                </Track.IncreaseRepeatButton>
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
-                                </Track.DecreaseRepeatButton>
-                            </Track>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="Orientation" Value="Horizontal">
-                    <Setter Property="Height" Value="10"/>
-                    <Setter Property="Width" Value="Auto"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ScrollBar">
-                                <Grid Background="#0E1621">
-                                    <Track x:Name="PART_Track" IsDirectionReversed="False">
-                                        <Track.Thumb>
-                                            <Thumb>
-                                                <Thumb.Template>
-                                                    <ControlTemplate TargetType="Thumb">
-                                                        <Border Background="#2A475E" CornerRadius="5" Margin="0,2"/>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Background" Value="#3D6A8F"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Thumb.Template>
-                                            </Thumb>
-                                        </Track.Thumb>
-                                        <Track.IncreaseRepeatButton>
-                                            <RepeatButton Command="ScrollBar.PageRightCommand" Opacity="0" Focusable="False"/>
-                                        </Track.IncreaseRepeatButton>
-                                        <Track.DecreaseRepeatButton>
-                                            <RepeatButton Command="ScrollBar.PageLeftCommand" Opacity="0" Focusable="False"/>
-                                        </Track.DecreaseRepeatButton>
-                                    </Track>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </Window.Resources>
 
     <Border Background="#1B2838"
@@ -295,6 +223,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <!-- TITLE BAR -->
             <Grid Grid.Row="0" Background="#16202D"
                   MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
@@ -364,8 +293,10 @@
                         Click="CloseBtn_Click"/>
             </Grid>
 
+            <!-- CONTENT -->
             <Grid Grid.Row="1" Margin="20">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -377,12 +308,14 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
+                <!-- URL -->
                 <StackPanel Grid.Row="0" Margin="0,0,0,12">
                     <TextBlock Text="Ссылка на видео (YouTube)" Style="{StaticResource SteamLabel}"/>
                     <TextBox x:Name="UrlBox" Style="{StaticResource SteamTextBox}"
                              Text="https://www.youtube.com/watch?v="/>
                 </StackPanel>
 
+                <!-- Папка -->
                 <Grid Grid.Row="1" Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -398,6 +331,7 @@
                             Click="BrowseBtn_Click"/>
                 </Grid>
 
+                <!-- Качество + кнопки -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,12">
                     <TextBlock Text="Качество:" Foreground="#C7D5E0" VerticalAlignment="Center"
                                Margin="0,0,10,0"/>
@@ -424,22 +358,35 @@
                             Click="HistoryBtn_Click"/>
                 </StackPanel>
 
+                <!-- Чекбокс плейлиста (скрыт по умолчанию) -->
+                <CheckBox x:Name="PlaylistCheck"
+                          Grid.Row="3"
+                          Foreground="#C7D5E0"
+                          FontSize="12"
+                          Margin="0,0,0,10"
+                          Content="Скачать плейлист целиком"
+                          Visibility="Collapsed"
+                          ToolTip="Если ссылка ведёт на плейлист — скачать все видео"/>
+
+                <!-- Hint про AV1 -->
                 <TextBlock x:Name="CodecHint"
-                           Grid.Row="3"
+                           Grid.Row="4"
                            Foreground="#F0A030"
                            FontSize="11"
                            Margin="0,0,0,10"
                            Visibility="Collapsed"
                            Text="⚠ 2K+ требует AV1 → установить в ⚙"/>
 
-                <Grid Grid.Row="4" Margin="0,6,0,6">
+                <!-- Прогресс -->
+                <Grid Grid.Row="5" Margin="0,6,0,6">
                     <ProgressBar x:Name="Progress" Height="22"
                                  Background="#16202D" Foreground="#66C0F4"
                                  BorderBrush="#2A475E" BorderThickness="1"
                                  Minimum="0" Maximum="100" Value="0"/>
                 </Grid>
 
-                <Grid Grid.Row="5" Margin="0,0,0,8">
+                <!-- Статус -->
+                <Grid Grid.Row="6" Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -453,9 +400,10 @@
                                FontSize="12"/>
                 </Grid>
 
-                <Border Grid.Row="6"/>
+                <Border Grid.Row="7"/>
 
-                <Border Grid.Row="7"
+                <!-- Лог -->
+                <Border Grid.Row="8"
                         Background="#0E1621"
                         BorderBrush="#2A475E"
                         BorderThickness="1"
@@ -472,14 +420,11 @@
                              VerticalScrollBarVisibility="Auto"
                              HorizontalScrollBarVisibility="Auto"
                              AcceptsReturn="True"
-                             Padding="8">
-                        <TextBox.Resources>
-                            <Style TargetType="ScrollBar" BasedOn="{StaticResource {x:Type ScrollBar}}"/>
-                        </TextBox.Resources>
-                    </TextBox>
+                             Padding="8"/>
                 </Border>
 
-                <Grid Grid.Row="8" Margin="0,8,0,0">
+                <!-- Нижняя панель -->
+                <Grid Grid.Row="9" Margin="0,8,0,0">
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">

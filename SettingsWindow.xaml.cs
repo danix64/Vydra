@@ -22,8 +22,9 @@ public partial class SettingsWindow : Window
 
     private readonly HttpClient _http = new();
 
+    // ⚠️ При публикации на GitHub — заменить на свой репозиторий
     private const string AppRepoApi = "https://api.github.com/repos/danix64/Vydra/releases/latest";
-    private const string AppVersion = "0.1.0";
+    private const string AppVersion = "0.1.1";
 
     public SettingsWindow(AppSettings current)
     {
@@ -134,9 +135,12 @@ public partial class SettingsWindow : Window
         }
     }
 
-    private async void CheckAv1()
+    private async void CheckAv1(bool forceRefresh = false)
     {
-        bool installed = await Av1Service.IsInstalledAsync();
+        if (forceRefresh)
+            Av1Service.ResetCache();
+
+        bool installed = await Av1Service.IsInstalledAsync(forceRefresh);
 
         if (installed)
         {
@@ -174,10 +178,18 @@ public partial class SettingsWindow : Window
             return;
         }
 
+        // Проверяем 3 раза: через 10, 30, 60 секунд после открытия Store
         Dispatcher.InvokeAsync(async () =>
         {
-            await Task.Delay(5000);
-            CheckAv1();
+            int[] delays = { 10_000, 30_000, 60_000 };
+            foreach (var delay in delays)
+            {
+                await Task.Delay(delay);
+                CheckAv1(forceRefresh: true);
+
+                if (Av1Check.IsChecked == true)
+                    break;
+            }
         });
     }
 
@@ -382,7 +394,8 @@ public partial class SettingsWindow : Window
             if (doc.RootElement.TryGetProperty("html_url", out var html))
                 htmlUrl = html.GetString() ?? "";
 
-            if (string.Equals(latestVersion, AppVersion, StringComparison.OrdinalIgnoreCase))
+            // Сравниваем версии: если на GitHub старее или равна — молчим
+            if (CompareVersions(latestVersion, AppVersion) <= 0)
             {
                 DialogService.Info(
                     $"У вас последняя версия: {AppVersion}",
@@ -461,5 +474,34 @@ public partial class SettingsWindow : Window
     {
         _lavCts?.Cancel();
         base.OnClosing(e);
+    }
+
+    /// <summary>
+    /// Сравнивает версии в формате "1.2.3". Возвращает:
+    ///  -1 если a < b
+    ///   0 если a == b
+    ///   1 если a > b
+    /// </summary>
+    private static int CompareVersions(string a, string b)
+    {
+        try
+        {
+            var pa = a.Split('.');
+            var pb = b.Split('.');
+
+            int len = Math.Max(pa.Length, pb.Length);
+            for (int i = 0; i < len; i++)
+            {
+                int na = i < pa.Length && int.TryParse(pa[i], out var x) ? x : 0;
+                int nb = i < pb.Length && int.TryParse(pb[i], out var y) ? y : 0;
+
+                if (na != nb) return na.CompareTo(nb);
+            }
+            return 0;
+        }
+        catch
+        {
+            return 0;
+        }
     }
 }

@@ -37,6 +37,8 @@ public partial class MainWindow : Window
 
         SelectQuality(_settings.DefaultQuality);
 
+        UrlBox.TextChanged += UrlBox_TextChanged;
+
         try
         {
             string logDir = Path.Combine(
@@ -64,6 +66,20 @@ public partial class MainWindow : Window
             }
         }
         QualityBox.SelectedIndex = 1;
+    }
+
+    private void UrlBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string url = UrlBox.Text.Trim();
+        bool looksLikePlaylist = url.Contains("list=") ||
+                                  url.Contains("/playlist");
+
+        PlaylistCheck.Visibility = looksLikePlaylist
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        if (!looksLikePlaylist)
+            PlaylistCheck.IsChecked = false;
     }
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -201,18 +217,23 @@ public partial class MainWindow : Window
         string quality = ((ComboBoxItem)QualityBox.SelectedItem)
             .Content.ToString()!.Split(' ')[0];
 
+        bool downloadPlaylist = PlaylistCheck.IsChecked == true;
+
         _cts = new CancellationTokenSource();
         SetUiBusy(true);
         Progress.Value = 0;
         LogBox.Clear();
         Log($"=== Скачивание: {url}");
         Log($"Качество: {quality}p, папка: {folder}");
+        if (downloadPlaylist)
+            Log("Режим: весь плейлист");
 
         try
         {
             string? filePath = await _ytDlp.DownloadAsync(
                 url, folder, quality,
                 _settings.Proxy,
+                downloadPlaylist,
                 p => Dispatcher.Invoke(() => UpdateProgress(p)),
                 line => Dispatcher.Invoke(() => Log(line)),
                 _cts.Token);
@@ -328,7 +349,7 @@ public partial class MainWindow : Window
             "YouTube не качается?");
     }
 
-    private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+    private async void SettingsBtn_Click(object sender, RoutedEventArgs e)
     {
         var wnd = new SettingsWindow(_settings)
         {
@@ -351,6 +372,23 @@ public partial class MainWindow : Window
         }
 
         RefreshToolsStatus();
+
+        // Перепроверяем AV1 — вдруг пользователь установил его из Store
+        try
+        {
+            bool wasInstalled = _av1Installed;
+
+            Av1Service.ResetCache();
+            _av1Installed = await Av1Service.IsInstalledAsync(forceRefresh: true);
+            UpdateCodecHint();
+
+            // Пишем в лог ТОЛЬКО если статус изменился
+            if (wasInstalled != _av1Installed)
+            {
+                Log($"AV1 Video Extension: {(_av1Installed ? "установлено" : "не установлено")}");
+            }
+        }
+        catch { }
     }
 
     private void RefreshToolsStatus()
@@ -388,6 +426,7 @@ public partial class MainWindow : Window
         UrlBox.IsEnabled = !busy;
         FolderBox.IsEnabled = !busy;
         QualityBox.IsEnabled = !busy;
+        PlaylistCheck.IsEnabled = !busy;
     }
 
     private void Log(string line)

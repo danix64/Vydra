@@ -1,33 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <AssemblyName>Vydra</AssemblyName>
-    <RootNamespace>Vydra</RootNamespace>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>vydra.ico</ApplicationIcon>
-    <Version>0.1.0</Version>
-    <Product>Vydra</Product>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<AssemblyName>Vydra</AssemblyName>
+		<RootNamespace>Vydra</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>vydra.ico</ApplicationIcon>
+		<Version>0.1.1</Version>
+		<Product>Vydra</Product>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="vydra.ico" />
-  </ItemGroup>
+	<ItemGroup>
+	  <None Remove="vydra.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="vydra.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+	  <Resource Include="vydra.ico">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Tools\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Tools\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

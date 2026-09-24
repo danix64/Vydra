@@ -16,9 +16,6 @@ public static class Av1Service
         return _cached.Value;
     }
 
-    /// <summary>
-    /// Асинхронная проверка — не блокирует UI.
-    /// </summary>
     public static Task<bool> IsInstalledAsync(bool forceRefresh = false)
     {
         if (_cached.HasValue && !forceRefresh)
@@ -30,6 +27,14 @@ public static class Av1Service
             _cached = result;
             return result;
         });
+    }
+
+    /// <summary>
+    /// Сбрасывает кеш — пригодится после установки AV1 из Store.
+    /// </summary>
+    public static void ResetCache()
+    {
+        _cached = null;
     }
 
     public static void OpenStorePage()

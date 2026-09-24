@@ -37,12 +37,14 @@ public class YtDlpService
 
     /// <summary>
     /// Возвращает путь к скачанному файлу или null при ошибке.
+    /// При скачивании плейлиста возвращает путь к последнему файлу.
     /// </summary>
     public async Task<string?> DownloadAsync(
         string url,
         string outputDir,
         string quality,
         string? proxy,
+        bool downloadPlaylist,
         Action<DownloadProgress> onProgress,
         Action<string> onLog,
         CancellationToken ct = default)
@@ -62,6 +64,7 @@ public class YtDlpService
         args.Append("--force-ipv4 ");
         args.Append("--no-check-certificates ");
         args.Append("--user-agent \"\" ");
+        args.Append(downloadPlaylist ? "--yes-playlist " : "--no-playlist ");
 
         // Приоритет кодеков:
         //   до 1080p — H.264 (играется везде без расширений)
