@@ -1,87 +1,89 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Vydra.Services;
-
-public static class Av1Service
+namespace Vydra.Services
 {
-    private static bool? _cached;
-
-    public static bool IsInstalled(bool forceRefresh = false)
+    public static class Av1Service
     {
-        if (_cached.HasValue && !forceRefresh)
+        private static bool? _cached;
+
+        public static bool IsInstalled(bool forceRefresh = false)
+        {
+            if (_cached.HasValue && !forceRefresh)
+                return _cached.Value;
+
+            _cached = CheckAv1Internal();
             return _cached.Value;
+        }
 
-        _cached = CheckAv1Internal();
-        return _cached.Value;
-    }
-
-    public static Task<bool> IsInstalledAsync(bool forceRefresh = false)
-    {
-        if (_cached.HasValue && !forceRefresh)
-            return Task.FromResult(_cached.Value);
-
-        return Task.Run(() =>
+        public static Task<bool> IsInstalledAsync(bool forceRefresh = false)
         {
-            bool result = CheckAv1Internal();
-            _cached = result;
-            return result;
-        });
-    }
+            if (_cached.HasValue && !forceRefresh)
+                return Task.FromResult(_cached.Value);
 
-    /// <summary>
-    /// Сбрасывает кеш — пригодится после установки AV1 из Store.
-    /// </summary>
-    public static void ResetCache()
-    {
-        _cached = null;
-    }
-
-    public static void OpenStorePage()
-    {
-        try
-        {
-            Process.Start(new ProcessStartInfo
+            return Task.Run(() =>
             {
-                FileName = "ms-windows-store://pdp/?productid=9MVZQVXJBQ9V",
-                UseShellExecute = true
+                bool result = CheckAv1Internal();
+                _cached = result;
+                return result;
             });
         }
-        catch { }
-    }
 
-    private static bool CheckAv1Internal()
-    {
-        try
+        public static void ResetCache()
         {
-            var psi = new ProcessStartInfo
-            {
-                FileName = "powershell.exe",
-                Arguments = "-NoProfile -NonInteractive -WindowStyle Hidden -Command \"(Get-AppxPackage *AV1VideoExtension* | Measure-Object).Count\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
+            _cached = null;
+        }
 
-            using var p = Process.Start(psi);
-            if (p == null) return false;
-
-            var readTask = p.StandardOutput.ReadToEndAsync();
-            if (!readTask.Wait(TimeSpan.FromSeconds(6)))
+        public static void OpenStorePage()
+        {
+            try
             {
-                try { p.Kill(true); } catch { }
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "ms-windows-store://pdp/?productid=9MVZQVXJBQ9V",
+                    UseShellExecute = true
+                });
+            }
+            catch { }
+        }
+
+        private static bool CheckAv1Internal()
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "-NoProfile -NonInteractive -WindowStyle Hidden -Command \"(Get-AppxPackage *AV1VideoExtension* | Measure-Object).Count\"",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+
+                using (var p = Process.Start(psi))
+                {
+                    if (p == null) return false;
+
+                    var readTask = p.StandardOutput.ReadToEndAsync();
+                    if (!readTask.Wait(TimeSpan.FromSeconds(6)))
+                    {
+                        try { p.Kill(); } catch { }
+                        return false;
+                    }
+
+                    string output = readTask.Result.Trim();
+                    p.WaitForExit(2000);
+
+                    int count;
+                    return int.TryParse(output, out count) && count > 0;
+                }
+            }
+            catch
+            {
                 return false;
             }
-
-            string output = readTask.Result.Trim();
-            p.WaitForExit(2000);
-
-            return int.TryParse(output, out int count) && count > 0;
-        }
-        catch
-        {
-            return false;
         }
     }
 }

@@ -2,6 +2,7 @@ bin/
 obj/
 .vs/
 publish/
+packages/
 *.user
 Tools/*.exe
 Tools/*.zip

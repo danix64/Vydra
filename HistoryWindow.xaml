@@ -83,6 +83,77 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="#0E1621"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="#0E1621">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#2A475E" CornerRadius="5" Margin="2,0"/>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#3D6A8F"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="Height" Value="10"/>
+                    <Setter Property="Width" Value="Auto"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ScrollBar">
+                                <Grid Background="#0E1621">
+                                    <Track x:Name="PART_Track" IsDirectionReversed="False">
+                                        <Track.Thumb>
+                                            <Thumb>
+                                                <Thumb.Template>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Border Background="#2A475E" CornerRadius="5" Margin="0,2"/>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="#3D6A8F"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+                                        </Track.Thumb>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageRightCommand" Opacity="0" Focusable="False"/>
+                                        </Track.IncreaseRepeatButton>
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageLeftCommand" Opacity="0" Focusable="False"/>
+                                        </Track.DecreaseRepeatButton>
+                                    </Track>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Border Background="#1B2838"
@@ -91,17 +162,16 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="36"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Title bar -->
             <Grid Grid.Row="0" Background="#16202D"
                   MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -119,26 +189,35 @@
                            VerticalAlignment="Center"/>
 
                 <Button Grid.Column="2"
-                        Content="─"
-                        Style="{StaticResource CaptionButton}"
-                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                        Click="MinimizeBtn_Click"/>
-
-                <Button Grid.Column="3"
                         Content="✕"
                         Style="{StaticResource CloseCaptionButton}"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Click="CloseBtn_Click"/>
             </Grid>
 
-            <!-- Список истории -->
-            <ScrollViewer Grid.Row="1" Margin="16,12,16,12"
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="16,8,16,0">
+                <Button x:Name="FilterAllBtn" Content="Все"
+                        Style="{StaticResource SteamButton}"
+                        Padding="14,6" FontSize="12"
+                        Margin="0,0,6,0"
+                        Click="FilterAll_Click"/>
+                <Button x:Name="FilterVideoBtn" Content="Видео"
+                        Style="{StaticResource SteamButton}"
+                        Padding="14,6" FontSize="12"
+                        Margin="0,0,6,0"
+                        Click="FilterVideo_Click"/>
+                <Button x:Name="FilterAudioBtn" Content="Аудио"
+                        Style="{StaticResource SteamButton}"
+                        Padding="14,6" FontSize="12"
+                        Click="FilterAudio_Click"/>
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="2" Margin="16,12,16,12"
                           VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="HistoryList"/>
             </ScrollViewer>
 
-            <!-- Нижняя панель -->
-            <Grid Grid.Row="2" Margin="16,0,16,16">
+            <Grid Grid.Row="3" Margin="16,0,16,16">
                 <TextBlock x:Name="EmptyText"
                            Text="История пуста."
                            Foreground="#8F98A0"

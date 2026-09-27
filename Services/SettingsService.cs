@@ -1,50 +1,49 @@
-﻿using System.IO;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Xml;
 using Vydra.Models;
 
-namespace Vydra.Services;
-
-public static class SettingsService
+namespace Vydra.Services
 {
-    private static readonly string SettingsDir =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Vydra");
-
-    private static readonly string SettingsPath =
-        Path.Combine(SettingsDir, "settings.json");
-
-    private static readonly JsonSerializerOptions JsonOptions = new()
+    public static class SettingsService
     {
-        WriteIndented = true
-    };
+        private static readonly string SettingsDir =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Vydra");
 
-    public static AppSettings Load()
-    {
-        try
+        private static readonly string SettingsPath =
+            Path.Combine(SettingsDir, "settings.json");
+
+        public static AppSettings Load()
         {
-            if (File.Exists(SettingsPath))
+            try
             {
-                var json = File.ReadAllText(SettingsPath);
-                var s = JsonSerializer.Deserialize<AppSettings>(json, JsonOptions);
-                if (s != null) return s;
+                if (File.Exists(SettingsPath))
+                {
+                    var json = File.ReadAllText(SettingsPath);
+                    var s = JsonConvert.DeserializeObject<AppSettings>(json);
+                    if (s != null) return s;
+                }
             }
-        }
-        catch
-        {
-            // если файл битый — вернём дефолт
+            catch { }
+
+            var settings = new AppSettings();
+            settings.DefaultFolder = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Vydra");
+            settings.DefaultQuality = "1080";
+            settings.HistoryLimit = 30;
+            return settings;
         }
 
-        return new AppSettings
+        public static void Save(AppSettings settings)
         {
-            DefaultFolder = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Vydra"),
-            DefaultQuality = "1080"
-        };
-    }
-
-    public static void Save(AppSettings settings)
-    {
-        Directory.CreateDirectory(SettingsDir);
-        var json = JsonSerializer.Serialize(settings, JsonOptions);
-        File.WriteAllText(SettingsPath, json);
+            try
+            {
+                Directory.CreateDirectory(SettingsDir);
+                var json = JsonConvert.SerializeObject(settings, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(SettingsPath, json);
+            }
+            catch { }
+        }
     }
 }

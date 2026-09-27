@@ -68,7 +68,6 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Заголовок (кликабельный для перетаскивания) -->
                 <Grid x:Name="TitleBar" Grid.Row="0"
                       Background="Transparent"
                       MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
@@ -78,7 +77,6 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Иконка Vydra -->
                     <Image x:Name="IconImage"
                            Grid.Column="0"
                            Width="24" Height="24"
@@ -86,7 +84,6 @@
                            VerticalAlignment="Top"
                            RenderOptions.BitmapScalingMode="HighQuality"/>
 
-                    <!-- Заголовок -->
                     <TextBlock x:Name="TitleText" Grid.Column="1"
                                Text="Заголовок"
                                Foreground="#C7D5E0"
@@ -95,7 +92,6 @@
                                Margin="0,16,0,0"
                                TextWrapping="Wrap"/>
 
-                    <!-- Кнопка закрытия -->
                     <Button x:Name="CloseXBtn" Grid.Column="2"
                             Content="✕"
                             Width="36" Height="32"
@@ -123,7 +119,6 @@
                     </Button>
                 </Grid>
 
-                <!-- Текст сообщения -->
                 <TextBlock x:Name="MessageText" Grid.Row="1"
                            Text="Текст сообщения"
                            Foreground="#C7D5E0"
@@ -131,7 +126,6 @@
                            TextWrapping="Wrap"
                            Margin="50,10,24,20"/>
 
-                <!-- Кнопки -->
                 <StackPanel x:Name="ButtonsPanel" Grid.Row="2"
                             Orientation="Horizontal"
                             HorizontalAlignment="Right"

@@ -92,13 +92,11 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- ===== TITLE BAR ===== -->
             <Grid Grid.Row="0" Background="#16202D"
                   MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -116,19 +114,12 @@
                            VerticalAlignment="Center"/>
 
                 <Button Grid.Column="2"
-                        Content="─"
-                        Style="{StaticResource CaptionButton}"
-                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                        Click="MinimizeBtn_Click"/>
-
-                <Button Grid.Column="3"
                         Content="✕"
                         Style="{StaticResource CloseCaptionButton}"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Click="CloseBtn_Click"/>
             </Grid>
 
-            <!-- ===== КОНТЕНТ ===== -->
             <Grid Grid.Row="1" Margin="24">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

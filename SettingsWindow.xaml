@@ -116,13 +116,11 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- TITLE BAR -->
             <Grid Grid.Row="0" Background="#16202D"
                   MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -140,48 +138,31 @@
                            VerticalAlignment="Center"/>
 
                 <Button Grid.Column="2"
-                        Content="─"
-                        Style="{StaticResource CaptionButton}"
-                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                        Click="MinimizeBtn_Click"/>
-
-                <Button Grid.Column="3"
                         Content="✕"
                         Style="{StaticResource CloseCaptionButton}"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Click="CloseBtn_Click"/>
             </Grid>
 
-            <!-- КОНТЕНТ -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <Grid Margin="24">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- 0: Утилиты -->
                         <RowDefinition Height="Auto"/>
-                        <!-- 1: Прокси -->
                         <RowDefinition Height="Auto"/>
-                        <!-- 2: AV1 -->
                         <RowDefinition Height="Auto"/>
-                        <!-- 3: Разделитель -->
                         <RowDefinition Height="Auto"/>
-                        <!-- 4: LAV Filters -->
                         <RowDefinition Height="Auto"/>
-                        <!-- 5: Логи -->
                         <RowDefinition Height="Auto"/>
-                        <!-- 6: Обновление Vydra -->
                         <RowDefinition Height="*"/>
-                        <!-- 7: Пусто -->
                         <RowDefinition Height="Auto"/>
-                        <!-- 8: Кнопки -->
                     </Grid.RowDefinitions>
 
-                    <!-- 0. Утилиты -->
                     <StackPanel Grid.Row="0" Margin="0,0,0,20">
                         <TextBlock Text="Утилиты" Style="{StaticResource SectionHeader}"/>
                         <TextBlock Text="yt-dlp, ffmpeg, deno — для скачивания и склейки видео"
                                    Style="{StaticResource SteamLabel}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <WrapPanel Orientation="Horizontal" Margin="0,4,0,0">
                             <CheckBox x:Name="ToolsCheck" Foreground="#C7D5E0" FontSize="12"
                                       VerticalAlignment="Center" IsEnabled="False"
                                       Content="Утилиты: проверка..."/>
@@ -193,10 +174,9 @@
                                     Style="{StaticResource SteamButton}"
                                     Margin="8,0,0,0"
                                     Click="UpdateYtDlpBtn_Click"/>
-                        </StackPanel>
+                        </WrapPanel>
                     </StackPanel>
 
-                    <!-- 1. Прокси -->
                     <StackPanel Grid.Row="1" Margin="0,0,0,20">
                         <TextBlock Text="Прокси" Style="{StaticResource SectionHeader}"/>
                         <TextBlock Text="Необязательно. Формат: socks5://host:port или http://host:port"
@@ -205,12 +185,11 @@
                                  ToolTip="Оставьте пустым, если прокси не нужен"/>
                     </StackPanel>
 
-                    <!-- 2. AV1 -->
                     <StackPanel Grid.Row="2" Margin="0,0,0,20">
                         <TextBlock Text="AV1 Video Extension" Style="{StaticResource SectionHeader}"/>
                         <TextBlock Text="Для воспроизведения 2K/4K/8K в Windows Media Player"
                                    Style="{StaticResource SteamLabel}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <WrapPanel Orientation="Horizontal" Margin="0,4,0,0">
                             <CheckBox x:Name="Av1Check" Foreground="#C7D5E0" FontSize="12"
                                       VerticalAlignment="Center" IsEnabled="False"
                                       Content="AV1: проверка..."/>
@@ -218,18 +197,16 @@
                                     Style="{StaticResource SteamButton}"
                                     Margin="16,0,0,0" Visibility="Collapsed"
                                     Click="InstallAv1Btn_Click"/>
-                        </StackPanel>
+                        </WrapPanel>
                     </StackPanel>
 
-                    <!-- 3. Разделитель -->
                     <Border Grid.Row="3" Height="1" Background="#2A475E" Margin="0,0,0,20"/>
 
-                    <!-- 4. LAV Filters -->
                     <StackPanel Grid.Row="4" Margin="0,0,0,20">
                         <TextBlock Text="Кодеки LAV Filters" Style="{StaticResource SectionHeader}"/>
                         <TextBlock Text="Для корректного воспроизведения 4K/HEVC в плеерах"
                                    Style="{StaticResource SteamLabel}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <WrapPanel Orientation="Horizontal" Margin="0,4,0,0">
                             <CheckBox x:Name="LavCheck" Foreground="#C7D5E0" FontSize="12"
                                       VerticalAlignment="Center" IsEnabled="False"
                                       Content="LAV Filters: проверка..."/>
@@ -237,10 +214,9 @@
                                     Style="{StaticResource SteamButton}"
                                     Margin="16,0,0,0" Visibility="Collapsed"
                                     Click="InstallLavBtn_Click"/>
-                        </StackPanel>
+                        </WrapPanel>
                     </StackPanel>
 
-                    <!-- 5. Логи -->
                     <StackPanel Grid.Row="5" Margin="0,0,0,20">
                         <TextBlock Text="Логи" Style="{StaticResource SectionHeader}"/>
                         <TextBlock Text="История работы программы — по дням"
@@ -252,11 +228,10 @@
                                 Click="OpenLogsBtn_Click"/>
                     </StackPanel>
 
-                    <!-- 6. Обновление Vydra -->
                     <StackPanel Grid.Row="6" Margin="0,0,0,20">
                         <TextBlock Text="Обновление Vydra" Style="{StaticResource SectionHeader}"/>
                         <TextBlock x:Name="AppVersionText"
-                                   Text="Vydra 0.1.0"
+                                   Text="Vydra 0.2.0"
                                    Style="{StaticResource SteamLabel}"/>
                         <Button x:Name="CheckUpdateBtn" Content="Проверить обновления"
                                 Style="{StaticResource SteamButton}"
@@ -267,7 +242,6 @@
 
                     <Border Grid.Row="7"/>
 
-                    <!-- 8. Кнопки -->
                     <StackPanel Grid.Row="8" Orientation="Horizontal"
                                 HorizontalAlignment="Right">
                         <Button x:Name="SaveBtn" Content="Сохранить"
