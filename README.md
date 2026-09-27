@@ -25,7 +25,7 @@
 2. Распакуйте в любую папку
 3. Запустите `Vydra.exe`
 
-При первом запуске Vydra проверит утилиты и обновит их до актуальных версий.
+При первом запуске Vydra сама скачает нужные утилиты.
 
 ---
 
@@ -45,26 +45,34 @@
 
 </details>
 
+<details>
+<summary>История загрузок</summary>
+
+![История](screenshots/screenshot-history.png)
+
+</details>
+
 ---
 
 ## ✨ Возможности
 
-- 📥 Скачивание видео с YouTube — 720p, 1080p, 2K, 4K, 8K
-- 📜 Скачивание целых плейлистов (для ссылок с плейлистом появляется галочка)
-- 🎨 Тёмный интерфейс
+- 📥 Скачивание видео с YouTube (144p — 8K)
+- 📜 Скачивание плейлистов (с ограничением «Первые N видео»)
+- 🎵 Конвертация в mp3 (только аудио)
+- 🎬 Выбор FPS (30 / 60 / 120 / Любой)
+- 📂 История загрузок с вкладками (Все / Видео / Аудио)
 - 🔧 Автоскачивание утилит (yt-dlp, ffmpeg, deno)
 - 🔄 Автообновление yt-dlp до nightly
-- 📖 История загрузок (последние 30)
-- 📋 Логи работы программы
 - 🎬 Установка LAV Filters одной кнопкой
 - 🖼 Проверка AV1-расширения для 4K
+- 📋 Логи работы программы по дням
 
 ---
 
 ## 💻 Системные требования
 
-- Windows 10 / 11 (x64)
-- Не требует установки .NET Runtime
+- Windows 7 SP1 / 8.1 / 10 / 11 (x64)
+- .NET Framework 4.8 (уже есть в Windows 10/11)
 
 ---
 
@@ -133,7 +141,7 @@ Download videos in high quality with a clean dark interface and automatic tool m
 2. Unpack to any folder
 3. Run `Vydra.exe`
 
-On first launch, Vydra will check tools and update them to latest versions.
+On first launch Vydra will auto-download required tools.
 
 ---
 
@@ -153,26 +161,34 @@ On first launch, Vydra will check tools and update them to latest versions.
 
 </details>
 
+<details>
+<summary>Download history</summary>
+
+![History](screenshots/screenshot-history.png)
+
+</details>
+
 ---
 
 ## ✨ Features
 
-- 📥 Download YouTube videos — 720p, 1080p, 2K, 4K, 8K
-- 📜 Download entire playlists (a checkbox appears for playlist links)
-- 🎨 Dark interface
+- 📥 Download YouTube videos (144p — 8K)
+- 📜 Download playlists (with "First N videos" limit)
+- 🎵 mp3 conversion (audio only)
+- 🎬 FPS selection (30 / 60 / 120 / Any)
+- 📂 Download history with tabs (All / Video / Audio)
 - 🔧 Auto-download of tools (yt-dlp, ffmpeg, deno)
 - 🔄 Auto-update of yt-dlp to nightly
-- 📖 Download history (last 30)
-- 📋 Program logs
 - 🎬 LAV Filters installation in one click
 - 🖼 AV1 extension check for 4K
+- 📋 Program logs by day
 
 ---
 
 ## 💻 System Requirements
 
-- Windows 10 / 11 (x64)
-- No .NET Runtime required
+- Windows 7 SP1 / 8.1 / 10 / 11 (x64)
+- .NET Framework 4.8 (already in Windows 10/11)
 
 ---
 
